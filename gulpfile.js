@@ -3,7 +3,9 @@
 var gulp = require('gulp'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
-    rename = require('gulp-rename');
+    rename = require('gulp-rename'),
+    sass = require('gulp-sass'),
+    maps = require('gulp-sourcemaps');
 
 //define a task
 //use gulp task method
@@ -36,10 +38,22 @@ gulp.task("concatScripts", function(){
 
 gulp.task("minifyScripts", function(){
     gulp.src("js/app.js")
-    .pipe(uglify())
-    .pipe(rename('app.min.js'))
-    //will totally work without above line, but will overwrite app.js, which we don't want in dev for debugging'
-    .pipe(gulp.dest('js'));
+        .pipe(uglify())
+        .pipe(rename('app.min.js'))
+        //will totally work without above line, but will overwrite app.js, which we don't want in dev for debugging'
+        .pipe(gulp.dest('js'));
+})
+
+gulp.task("compileSass", function(){
+    gulp.src("scss/application.scss")
+        //we only need grab the one sass file cause that file actually imports all the other sass files
+        .pipe(maps.init()) //optional bit for mapping part 1 - for making a map to help show what sass file css parts come from
+        .pipe(sass())
+        .pipe(maps.write('./')) //optional bit for mapping part 2
+            //arg is where you want map to live, path is relative to the gulp.dest directory below
+            //we want it in the same directory
+        .pipe(gulp.dest("css"))
+
 })
 
 
