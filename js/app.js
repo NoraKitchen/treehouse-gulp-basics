@@ -10538,4 +10538,3 @@ $('.main-heading').on('sticky-end', function () {
 });
 
 var foobar = yay;
-//# sourceMappingURL=app.js.map
